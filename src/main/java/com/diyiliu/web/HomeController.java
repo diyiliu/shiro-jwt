@@ -4,9 +4,9 @@ import com.diyiliu.support.util.JwtUtil;
 import com.diyiliu.support.util.PasswordHelper;
 import com.diyiliu.support.util.ResponseUtil;
 import io.swagger.annotations.Api;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -50,7 +50,7 @@ public class HomeController {
     }
 
     @GetMapping("/unauthorized")
-    public Object unAuth() {
+    public Object unauthorized(){
 
         return ResponseUtil.unAuth();
     }

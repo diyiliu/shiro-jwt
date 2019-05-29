@@ -1,7 +1,5 @@
 package com.diyiliu.support.shiro;
 
-import com.diyiliu.support.util.JacksonUtil;
-import com.diyiliu.support.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.springframework.http.HttpStatus;
@@ -11,9 +9,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
 
 /**
  * Description: JwtFilter
@@ -98,7 +93,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     private void responseError(ServletResponse response) {
         try {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            httpServletResponse.sendRedirect("/401");
+            httpServletResponse.sendRedirect("/unauthorized");
         }catch (Exception e){
             e.printStackTrace();
         }

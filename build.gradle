@@ -15,16 +15,16 @@ repositories {
 
 ext{
     springBootVersion = '2.1.5.RELEASE'
-    shiroVersion = '1.4.1'
     swaggerVersion = '2.9.2'
 }
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "$springBootVersion"
     compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: "$springBootVersion"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$springBootVersion"
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: "$springBootVersion"
 
-    compile group: 'org.apache.shiro', name: 'shiro-spring-boot-starter', version: "$shiroVersion"
+    compile group: 'org.apache.shiro', name: 'shiro-spring-boot-starter', version: '1.4.1'
     compile group: 'com.auth0', name: 'java-jwt', version: '3.8.0'
 
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'

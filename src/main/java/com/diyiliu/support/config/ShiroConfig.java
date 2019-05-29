@@ -30,9 +30,10 @@ public class ShiroConfig {
         factoryBean.setSecurityManager(securityManager());
         factoryBean.setLoginUrl("/login");
         factoryBean.setSuccessUrl("/home");
+        factoryBean.setUnauthorizedUrl("/unauthorized");
 
         Map<String, Filter> filters = new LinkedHashMap<>();
-        filters.put("authc", jwtFilter());
+        filters.put("authc", new JwtFilter());
         factoryBean.setFilters(filters);
 
         Map<String, String> filterChainDefinitionMap = new HashMap();
@@ -50,13 +51,6 @@ public class ShiroConfig {
         return factoryBean;
     }
 
-
-    @Bean
-    public JwtFilter jwtFilter() {
-
-        return new JwtFilter();
-    }
-
     @Bean
     public JwtRealm jwtRealm() {
 
@@ -67,10 +61,7 @@ public class ShiroConfig {
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(jwtRealm());
-        /*
-         * 关闭shiro自带的session，详情见文档
-         * http://shiro.apache.org/session-management.html#SessionManagement-StatelessApplications%28Sessionless%29
-         */
+
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
         defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
