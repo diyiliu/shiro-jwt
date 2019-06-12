@@ -1,8 +1,10 @@
 package com.diyiliu.support.config;
 
 import com.diyiliu.support.shiro.JwtFilter;
-import com.diyiliu.support.shiro.JwtRealm;
+import com.diyiliu.support.shiro.realm.JwtRealm;
+import com.diyiliu.support.shiro.realm.UserRealm;
 import com.diyiliu.support.util.PasswordHelper;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -57,10 +60,24 @@ public class ShiroConfig {
         return new JwtRealm();
     }
 
+
+    @Bean
+    public UserRealm userRealm() {
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
+        matcher.setHashIterations(2);
+        matcher.setHashAlgorithmName("MD5");
+
+        UserRealm userRealm = new UserRealm();
+        userRealm.setCredentialsMatcher(matcher);
+
+        return userRealm;
+    }
+
+
     @Bean
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(jwtRealm());
+        securityManager.setRealms(Arrays.asList(userRealm(), jwtRealm()));
 
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
@@ -72,7 +89,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public PasswordHelper passwordHelper(){
+    public PasswordHelper passwordHelper() {
         PasswordHelper helper = new PasswordHelper();
         helper.setHashAlgorithmName("MD5");
         helper.setHashIterations(2);

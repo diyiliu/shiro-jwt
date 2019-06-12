@@ -1,14 +1,17 @@
 package com.diyiliu.web;
 
 import com.diyiliu.support.util.JwtUtil;
-import com.diyiliu.support.util.PasswordHelper;
 import com.diyiliu.support.util.ResponseUtil;
 import io.swagger.annotations.Api;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * Description: HomeController
@@ -20,9 +23,6 @@ import javax.annotation.Resource;
 @RestController
 public class HomeController {
 
-    @Resource
-    private PasswordHelper passwordHelper;
-
     @GetMapping("/")
     public Object index() {
 
@@ -31,16 +31,30 @@ public class HomeController {
 
     @PostMapping("/login")
     public Object login(String username, String password) {
-        String salt = "6a75262bcb161d22eae1638f4a75bd14";
-        String enPwd = passwordHelper.encryptPassword(username, password, salt);
 
-        return ResponseUtil.ok("登录成功", JwtUtil.sign(username, enPwd));
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        String msg = "登录失败";
+        try {
+            subject.login(token);
+            String secret = "87166669";
+            return ResponseUtil.ok("登录成功", JwtUtil.sign(username, secret));
+        } catch (IncorrectCredentialsException e) {
+            msg = "密码错误";
+        } catch (LockedAccountException e) {
+            msg = "登录失败，该用户已被冻结";
+        } catch (AuthenticationException e) {
+            msg = "该用户不存在";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseUtil.fail(401, msg);
     }
 
     @GetMapping("/login")
     public Object toLogin() {
 
-        return ResponseUtil.unLogin();
+        return ResponseUtil.unAuth();
     }
 
     @GetMapping("/home")
@@ -50,7 +64,7 @@ public class HomeController {
     }
 
     @GetMapping("/unauthorized")
-    public Object unauthorized(){
+    public Object unauthorized() {
 
         return ResponseUtil.unAuth();
     }

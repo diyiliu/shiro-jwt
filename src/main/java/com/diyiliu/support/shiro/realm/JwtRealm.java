@@ -1,5 +1,6 @@
-package com.diyiliu.support.shiro;
+package com.diyiliu.support.shiro.realm;
 
+import com.diyiliu.support.shiro.JwtToken;
 import com.diyiliu.support.util.JwtUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -38,7 +39,7 @@ public class JwtRealm extends AuthorizingRealm {
             throw new AccountException("用户名不能为空");
         }
 
-        String password = "dd2ff6824accbefd23edc18c234ad313";
+        String password = "87166669";
         if (!JwtUtil.verify(token, username, password)) {
             throw new AuthenticationException("用户名或密码错误");
         }

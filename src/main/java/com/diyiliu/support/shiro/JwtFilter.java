@@ -88,7 +88,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     }
 
     /**
-     * 将非法请求跳转到 /unauthorized/**
+     * 将非法请求跳转到 /unauthorized
      */
     private void responseError(ServletResponse response) {
         try {

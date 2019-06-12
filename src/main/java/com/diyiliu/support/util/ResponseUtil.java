@@ -52,16 +52,16 @@ public class ResponseUtil {
         return new MsgBody(status).putMsg(msg);
     }
 
-    public static MsgBody badArgs() {
-        return fail(401, "参数异常");
+    public static MsgBody unAuth() {
+        return fail(401, "登录异常");
     }
 
     public static MsgBody badValue() {
         return fail(402, "参数值异常");
     }
 
-    public static MsgBody unLogin() {
-        return fail(501, "请登录");
+    public static MsgBody badArgs() {
+        return fail(501, "参数异常");
     }
 
     public static MsgBody serious() {
@@ -76,9 +76,6 @@ public class ResponseUtil {
         return fail(504, "更新数据失败");
     }
 
-    public static MsgBody unAuth() {
-        return fail(505, "无操作权限");
-    }
 
     @Data
     static class MsgBody<T> {
