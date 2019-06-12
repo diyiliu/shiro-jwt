@@ -8,6 +8,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +58,8 @@ public class HomeController {
         return ResponseUtil.unAuth();
     }
 
+
+    @RequiresAuthentication
     @GetMapping("/home")
     public Object home() {
 
