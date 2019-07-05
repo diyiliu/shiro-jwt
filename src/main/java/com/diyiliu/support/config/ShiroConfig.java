@@ -44,13 +44,14 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new HashMap();
         // swagger ui
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
-        filterChainDefinitionMap.put("/swagger-resources", "anon");
-        filterChainDefinitionMap.put("/v2/api-docs", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
         filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
+        filterChainDefinitionMap.put("/v2/api-docs", "anon");
+        filterChainDefinitionMap.put("/csrf", "anon");
 
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/unauthorized", "anon");
-        filterChainDefinitionMap.put("/**", "authc,jwt");
+        filterChainDefinitionMap.put("/**", "authc, jwt");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return factoryBean;

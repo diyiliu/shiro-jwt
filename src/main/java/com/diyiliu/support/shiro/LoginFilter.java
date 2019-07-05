@@ -35,7 +35,7 @@ public class LoginFilter extends FormAuthenticationFilter {
     protected boolean isLoginAttempt(ServletRequest request) {
         HttpServletRequest req = (HttpServletRequest) request;
         String authorization = req.getHeader(AUTHORIZATION_HEADER);
-        return StringUtils.isEmpty(authorization);
+        return authorization == null;
     }
 
     @Override
