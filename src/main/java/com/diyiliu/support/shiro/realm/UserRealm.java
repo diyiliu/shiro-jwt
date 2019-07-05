@@ -26,7 +26,10 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();
-
+        if (username == null) {
+            // 找不到用户
+            throw new UnknownAccountException();
+        }
 
         /*if (Boolean.TRUE.equals(user.getLocked())) {
             // 用户锁定

@@ -1,6 +1,7 @@
 package com.diyiliu.support.config;
 
 import com.diyiliu.support.shiro.JwtFilter;
+import com.diyiliu.support.shiro.LoginFilter;
 import com.diyiliu.support.shiro.realm.JwtRealm;
 import com.diyiliu.support.shiro.realm.UserRealm;
 import com.diyiliu.support.util.PasswordHelper;
@@ -36,7 +37,8 @@ public class ShiroConfig {
         factoryBean.setUnauthorizedUrl("/unauthorized");
 
         Map<String, Filter> filters = new LinkedHashMap<>();
-        filters.put("authc", new JwtFilter());
+        filters.put("jwt", new JwtFilter());
+        filters.put("authc", new LoginFilter());
         factoryBean.setFilters(filters);
 
         Map<String, String> filterChainDefinitionMap = new HashMap();
@@ -48,7 +50,7 @@ public class ShiroConfig {
 
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/unauthorized", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "authc,jwt");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return factoryBean;

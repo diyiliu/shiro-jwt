@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 public class JwtFilter extends BasicHttpAuthenticationFilter {
-    private final static String AUTHORIZATION_HEADER = "Authorization";
-
     /**
      *
      */
