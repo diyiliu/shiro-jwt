@@ -3,6 +3,7 @@ package com.diyiliu.support.shiro;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;
@@ -25,7 +26,8 @@ public class LoginFilter extends FormAuthenticationFilter {
             try {
                 return executeLogin(request, response);
             } catch (Exception e) {
-                responseError(response);
+                e.printStackTrace();
+                return false;
             }
         }
         return true;
@@ -40,17 +42,16 @@ public class LoginFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
-        responseError(response);
+        responseError(request, response);
         return true;
     }
 
     /**
      * 将非法请求跳转到 /unauthorized
      */
-    private void responseError(ServletResponse response) {
+    private void responseError(ServletRequest request, ServletResponse response) {
         try {
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            httpServletResponse.sendRedirect("/unauthorized");
+            WebUtils.redirectToSavedRequest(request, response, "/unauthorized");
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -39,6 +39,7 @@ public class JwtRealm extends AuthorizingRealm {
             throw new AccountException("用户名不能为空");
         }
 
+
         String password = "87166669";
         if (!JwtUtil.verify(token, username, password)) {
             throw new AuthenticationException("用户名或密码错误");
